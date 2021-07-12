@@ -1,8 +1,29 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import useSWR from 'swr'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export async function getServerSideProps(context) {
+  const res = await fetch('http://localhost:3000/api/hello')
+  const data = await res.json()
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  return {
+    props: {hello: data}, // will be passed to the page component as props
+  }
+}
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
+function Home({ hello }) {
+  // const { data, error } = useSWR('/api/hello', fetch)
+  // console.log(data)
+  // const { data, error } = useSWR('/api/hello', fetcher)
+  // console.log(data);
   return (
     <div className={styles.container}>
       <Head>
@@ -52,6 +73,8 @@ export default function Home() {
         </div>
       </main>
 
+      {hello.name}
+
       <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -67,3 +90,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home;
