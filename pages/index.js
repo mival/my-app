@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 export async function getServerSideProps(context) {
-  const res = await fetch('http://localhost:3000/api/hello')
+  const res = await fetch('https://vigilant-easley-700077.netlify.app/api/hello')
   const data = await res.json()
 
   if (!data) {
